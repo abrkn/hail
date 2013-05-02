@@ -1,43 +1,43 @@
 {
-    "name": "hail",
-    "version": "0.0.1",
-    "description": "Common interface to virtual currency exchanges",
-    "keywords": [
-        "bitcoin",
-        "litecoin",
-        "mtgox",
-        "snow",
-        "virtual",
-        "currency"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "http://github.com/abrkn/hail"
-    },
-    "licenses": [
-        {
-            "type": "Free as in Hugs Licence",
-            "url": "http://blog.izs.me/post/48281002063/free-as-in-hugs-licence"
-        }
-    ],
-    "author": "Andreas Brekken <a@abrkn.com> (http://abrkn.com/)",
-    "bugs": "http://github.com/abrkn/hail/issues",
-    "scripts": {
-        "test": "mocha"
-    },
-    "dependencies": {
-        "mtgox": "~1.0.0",
-        "snow-client":"~0.1.4",
-        "konfu": "~1.1.4",
-        "async": "~0.2.8",
-        "num": "~0.2.1",
-        "ripple-lib": "~0.7.12"
-    },
-    "devDependencies": {
-        "expect.js": "~0.2.0",
-        "mocha": "~1.9.0"
-    },
-    "engines": {
-        "node": ">=0.6"
+  "name": "hail",
+  "version": "0.0.2",
+  "description": "Common interface to virtual currency exchanges",
+  "keywords": [
+    "bitcoin",
+    "litecoin",
+    "mtgox",
+    "snow",
+    "virtual",
+    "currency"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/abrkn/hail"
+  },
+  "licenses": [
+    {
+      "type": "Free as in Hugs Licence",
+      "url": "http://blog.izs.me/post/48281002063/free-as-in-hugs-licence"
     }
+  ],
+  "author": "Andreas Brekken <a@abrkn.com> (http://abrkn.com/)",
+  "bugs": "http://github.com/abrkn/hail/issues",
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+    "mtgox": "~1.0.0",
+    "snow-client": "~0.1.4",
+    "konfu": "~1.1.4",
+    "async": "~0.2.8",
+    "num": "~0.2.1",
+    "ripple-lib": "~0.7.12"
+  },
+  "devDependencies": {
+    "expect.js": "~0.2.0",
+    "mocha": "~1.9.0"
+  },
+  "engines": {
+    "node": ">=0.6"
+  }
 }
