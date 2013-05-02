@@ -3,7 +3,7 @@ Hail
 
 Common interface to virtual currency exchanges.
 
-[![Build Status](https://travis-ci.org/abrkn/mtgox.png)](https://travis-ci.org/abrkn/mtgox)
+[![Build Status](https://travis-ci.org/abrkn/hail.png)](https://travis-ci.org/abrkn/hail)
 
 Installation
 ---
