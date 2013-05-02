@@ -13,4 +13,8 @@ describe('hail', function() {
     it('defines Ripple', function() {
         expect(hail.Ripple).to.be.a('function')
     })
+
+    it('defines Btce', function() {
+        expect(hail.Btce).to.be.a('function')
+    })
 })
