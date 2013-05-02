@@ -66,6 +66,7 @@ Btce.prototype.market = function(id, cb) {
         json: true
     }, function(err, res, body) {
         if (err) return cb(err)
+        if (body.error) return cb(new Error(body.error))
         cb(null, {
             high: body.ticker.high.toString(),
             low: body.ticker.low.toString(),
@@ -85,6 +86,7 @@ Btce.prototype.depth = function(id, cb) {
         json: true
     }, function(err, res, body) {
         if (err) return cb(err)
+        if (body.error) return cb(new Error(body.error))
         cb(null, {
             bids: body.bids.map(function(bid) {
                 return {
@@ -106,8 +108,8 @@ Btce.prototype.orders = function(cb) {
     request(this.privateRequest('tapi', {
         method: 'OrderList'
     }), function(err, res, body) {
-        err = err || body.success ? null : new Error(body.error)
         if (err) return cb(err)
+        if (body.error) return cb(new Error(body.error))
         var hash = body['return']
         cb(null, Object.keys(hash).map(function(id) {
             var order = hash[id]
@@ -146,7 +148,7 @@ Btce.prototype.order = function(order, cb) {
         rate: order.price,
         amount: order.volume
     }), function(err, res, body) {
-        err = err || body.success ? null : new Error(body.error)
+        if (body.error) return cb(new Error(body.error))
         if (err) return cb(err)
         cb(null, body['return'].order_id.toString())
     })
@@ -157,7 +159,7 @@ Btce.prototype.cancel = function(id, cb) {
         method: 'CancelOrder',
         order_id: +id,
     }), function(err, res, body) {
-        err = err || body.success ? null : new Error(body.error)
+        if (body.error) return cb(new Error(body.error))
         if (err) return cb(err)
         cb()
     })
