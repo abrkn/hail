@@ -33,7 +33,9 @@
     "num": "~0.2.1",
     "ripple-lib": "~0.7.12",
     "request": "~2.21.0",
-    "nonce": "~1.0.3"
+    "nonce": "~1.0.3",
+    "lodash": "~1.2.1",
+    "debug": "~0.7.2"
   },
   "devDependencies": {
     "expect.js": "~0.2.0",

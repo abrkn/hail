@@ -53,7 +53,10 @@ Ripple.prototype.depth = function(market, cb) {
         }
     }
 
+    debug('acquiring depth for %s/%s %s/%s', base, baseIssuer, quote, quoteIssuer)
+
     async.parallel({
+
         bids: function(next) {
             var book = that.ripple.book(base, baseIssuer, quote, quoteIssuer)
             book.offers(next.bind(null, null))
@@ -63,6 +66,7 @@ Ripple.prototype.depth = function(market, cb) {
             book.offers(next.bind(null, null))
         }
     }, function(err, results) {
+        if (err) return cb(err)
         cb(null, {
             bids: results.bids.map(parseOffer),
             asks: results.bids.map(parseOffer)
