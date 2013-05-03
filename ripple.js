@@ -1,10 +1,11 @@
 var RippleLib = require('ripple-lib')
 , async = require('async')
 , num = require('num')
+, _ = require('lodash')
+, debug = require('debug')('hail:ripple')
 
 var Ripple = module.exports = function(options) {
-    this.options = options || {}
-    this.ripple = new RippleLib.Remote({
+    this.options = _.defaults(options, {
         trusted: false,
         websocket_ip: 's1.ripple.com',
         websocket_port: 51233,
@@ -13,8 +14,14 @@ var Ripple = module.exports = function(options) {
         local_signing: true
     })
 
+    this.ripple = new RippleLib.Remote(options)
+
     this.ripple.account(this.options.account)
     this.ripple.set_secret(this.options.account, this.options.secret)
+    debug('connecting to %s:%d (%sssl)',
+        this.options.websocket_ip,
+        this.options.websocket_port,
+        this.options.websocket_ssl ? '' : 'no ')
     this.ripple.connect()
 }
 
