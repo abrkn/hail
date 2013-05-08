@@ -7,7 +7,7 @@ var RippleLib = require('ripple-lib')
 var Ripple = module.exports = function(options) {
     this.options = _.defaults(options, {
         trusted: false,
-        websocket_ip: 's1.ripple.com',
+        websocket_ip: 's2.ripple.com',
         websocket_port: 51233,
         websocket_ssl: true,
         trace: false,
@@ -49,7 +49,7 @@ Ripple.prototype.depth = function(market, cb) {
 
         return {
             price: price.toString(),
-            volume: amountToNum(new RippleLib.Amount.from_json(o.taker_gets_funded)).toString()
+            amount: amountToNum(new RippleLib.Amount.from_json(o.taker_gets_funded)).toString()
         }
     }
 
@@ -93,13 +93,13 @@ Ripple.prototype.order = function(order, cb) {
     var tran = this.ripple.transaction()
 
     var takerPays = toAmount(
-        num(order.volume).mul(order.price).toString(),
-        order.side == 'ask' ? order.market.substr(3) : order.market.substr(0, 3),
+        num(order.amount).mul(order.price).toString(),
+        order.type == 'ask' ? order.market.substr(3) : order.market.substr(0, 3),
         this.options.issuer)
 
     var takerGets = toAmount(
-        order.volume,
-        order.side != 'ask' ? order.market.substr(3) : order.market.substr(0, 3),
+        order.amount,
+        order.type != 'ask' ? order.market.substr(3) : order.market.substr(0, 3),
         this.options.issuer)
 
     tran.offer_create(this.options.account, takerPays, takerGets)
@@ -149,7 +149,7 @@ Ripple.prototype.orders = function(cb) {
 
         return {
             price: (+price).toString(),
-            volume: (+amountToNum(new RippleLib.Amount.from_json(o.taker_gets))).toString()
+            amount: (+amountToNum(new RippleLib.Amount.from_json(o.taker_gets))).toString()
         }
     }
 
@@ -157,7 +157,7 @@ Ripple.prototype.orders = function(cb) {
     req.on('success', function(res) {
         cb(null, res.offers.map(function(o) {
             var offer = parseOffer(o)
-            offer.side = 'bid'
+            offer.type = 'bid'
             offer.id = o.seq + ''
             offer.market =  (typeof o.taker_pays == 'string' ? 'XRP' : o.taker_pays.currency) +
                 (typeof o.taker_gets == 'string' ? 'XRP' : o.taker_gets.currency)

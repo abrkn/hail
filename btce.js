@@ -116,8 +116,8 @@ Btce.prototype.orders = function(cb) {
             return {
                 id: id,
                 market: parsePair(order.pair),
-                side: parseType(order.type),
-                volume: order.amount.toString(),
+                type: parseType(order.type),
+                amount: order.amount.toString(),
                 price: order.rate.toString(),
                 created: order.timestamp_created,
                 status: order.status
@@ -144,9 +144,9 @@ Btce.prototype.order = function(order, cb) {
     request(this.privateRequest('tapi', {
         method: 'Trade',
         pair: this.formatPair(order.market),
-        type: formatType(order.side),
+        type: formatType(order.type),
         rate: order.price,
-        amount: order.volume
+        amount: order.amount
     }), function(err, res, body) {
         if (body.error) return cb(new Error(body.error))
         if (err) return cb(err)
