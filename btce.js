@@ -2,6 +2,7 @@ var request = require('request')
 , util = require('util')
 , qs = require('querystring')
 , crypto = require('crypto')
+, debug = require('debug')('btce')
 , Btce = module.exports = function(options) {
     this.options = options || {}
     this.options.url || (this.options.url = 'https://btc-e.com/')
@@ -61,6 +62,8 @@ Btce.prototype.privateRequest = function(path, payload) {
 }
 
 Btce.prototype.market = function(id, cb) {
+    debug('fetching market %s', id)
+
     request({
         url: util.format('%sapi/2/%s/ticker', this.options.url, formatPair(id)),
         json: true
@@ -81,11 +84,14 @@ Btce.prototype.market = function(id, cb) {
 }
 
 Btce.prototype.depth = function(id, cb) {
+    debug('fetching depth for market %s', id)
+
     request({
         url: util.format('%sapi/2/%s/depth', this.options.url, formatPair(id)),
         json: true
     }, function(err, res, body) {
         if (err) return cb(err)
+        if (res.statusCode != 200) return cb(new Error('Status ' + res.statusCode + ': ' + body))
         if (body.error) return cb(new Error(body.error))
         cb(null, {
             bids: body.bids.map(function(bid) {
