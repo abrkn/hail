@@ -3,6 +3,7 @@ var request = require('request')
 , qs = require('querystring')
 , crypto = require('crypto')
 , debug = require('debug')('btce')
+, num = require('num')
 , Btce = module.exports = function(options) {
     this.options = options || {}
     this.options.url || (this.options.url = 'https://btc-e.com/')
@@ -56,7 +57,7 @@ Btce.prototype.privateRequest = function(path, payload) {
         headers: {
             'Key': this.options.key,
             'Sign': hmac.digest('hex'),
-            'User-Agent': 'Mozilla/4.0 (compatible; Btc-E node.js client)',
+            'User-Agent': 'Mozilla/4.0 (compatible; Btc-E node.js client)'
         }
     }
 }
@@ -71,14 +72,14 @@ Btce.prototype.market = function(id, cb) {
         if (err) return cb(err)
         if (body.error) return cb(new Error(body.error))
         cb(null, {
-            high: body.ticker.high.toString(),
-            low: body.ticker.low.toString(),
-            average: body.ticker.avg.toString(),
-            volume: body.ticker.vol_cur.toString(),
+            high: num(body.ticker.high).toString(),
+            low: num(body.ticker.low).toString(),
+            average: num(body.ticker.avg).toString(),
+            volume: num(body.ticker.vol_cur).toString(),
             timestamp: body.ticker.server_time,
-            bid: body.ticker.buy.toString(),
-            ask: body.ticker.sell.toString(),
-            last: body.ticker.last.toString()
+            bid: num(body.ticker.buy).toString(),
+            ask: num(body.ticker.sell).toString(),
+            last: num(body.ticker.last).toString()
         })
     })
 }
@@ -96,14 +97,14 @@ Btce.prototype.depth = function(id, cb) {
         cb(null, {
             bids: body.bids.map(function(bid) {
                 return {
-                    price: bid[0].toString(),
-                    volume: bid[1].toString()
+                    price: num(bid[0]).toString(),
+                    volume: num(bid[1]).toString()
                 }
             }),
             asks: body.asks.map(function(ask) {
                 return {
-                    price: ask[0].toString(),
-                    volume: ask[1].toString()
+                    price: num(ask[0]).toString(),
+                    volume: num(ask[1]).toString()
                 }
             })
         })
@@ -123,8 +124,8 @@ Btce.prototype.orders = function(cb) {
                 id: id,
                 market: parsePair(order.pair),
                 type: parseType(order.type),
-                amount: order.amount.toString(),
-                price: order.rate.toString(),
+                amount: num(order.amount).toString(),
+                price: num(order.rate).toString(),
                 created: order.timestamp_created,
                 status: order.status
             }
@@ -151,8 +152,8 @@ Btce.prototype.order = function(order, cb) {
         method: 'Trade',
         pair: this.formatPair(order.market),
         type: formatType(order.type),
-        rate: order.price,
-        amount: order.amount
+        rate: num(order.price).toString(),
+        amount: num(order.amount).toString()
     }), function(err, res, body) {
         if (body.error) return cb(new Error(body.error))
         if (err) return cb(err)
@@ -163,7 +164,7 @@ Btce.prototype.order = function(order, cb) {
 Btce.prototype.cancel = function(id, cb) {
     request(this.privateRequest('tapi', {
         method: 'CancelOrder',
-        order_id: +id,
+        order_id: +id
     }), function(err, res, body) {
         if (body.error) return cb(new Error(body.error))
         if (err) return cb(err)
