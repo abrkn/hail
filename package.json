@@ -1,6 +1,6 @@
 {
   "name": "hail",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Common interface to virtual currency exchanges",
   "keywords": [
     "bitcoin",
